@@ -32,7 +32,7 @@ jobs:
     - name: Deploy to Azure Container Apps
       uses: azure/container-apps-deploy-action@v1
       with:
-        acrName: trafficsignclassifier-c9brh7a5a0gkcweu.azurecr.io
+        acrName: trafficsignclassifier-c9brh7a5a0gkcweu
         containerAppName: traffic-sign-classifier
         resourceGroup: traffic-sign-rg
         imageToDeploy: ${{ secrets.REGISTRY_LOGIN_SERVER }}/traffic-sign-classifier:latest
