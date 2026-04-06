@@ -10,15 +10,15 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Login to Azure
-      uses: azure/login@v1
+      uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Login to ACR
-      uses: azure/docker-login@v1
+      uses: azure/docker-login@v2
       with:
         login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
         username: ${{ secrets.REGISTRY_USERNAME }}
@@ -30,9 +30,8 @@ jobs:
         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/traffic-sign-classifier:latest
 
     - name: Deploy to Azure Container Apps
-      uses: azure/container-apps-deploy-action@v1
-      with:
-        acrName: trafficsignclassifier
-        containerAppName: traffic-sign-classifier
-        resourceGroup: traffic-sign-rg
-        imageToDeploy: ${{ secrets.REGISTRY_LOGIN_SERVER }}/traffic-sign-classifier:latest
+      run: |
+        az containerapp update \
+          --name traffic-sign-classifier \
+          --resource-group traffic-sign-rg \
+          --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/traffic-sign-classifier:latest
